@@ -1,4 +1,5 @@
 /* Контейнер страницы */
+html, body { scrollbar-gutter: stable both-edges; }
 .page {
   max-width: 1200px;
   margin: 0 auto;
@@ -84,6 +85,8 @@
   grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
   gap: 20px;
 }
+
+/* Удалён кастомный сдвиг: используем общий контейнер .page для центрирования */
 
 .card {
   border: 1px solid #333;

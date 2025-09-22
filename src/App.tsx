@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import './App.css'
 import PdfViewer from './components/PdfViewer'
 
@@ -71,12 +72,13 @@ function App() {
           {/* Замените src на вашу фотографию */}
           <div className="avatar" aria-label="Аватар" />
         </div>
-        <div className="hero__content">
-          <h1>Имя Фамилия</h1>
+        <div className="hero__content" style={{ position: 'relative' }}>
+          <h1>Василий Дубровин</h1>
+          <h3>Аналитик данных / Менеджер проектов</h3>
           <p>
-            Короткое описание о себе: опыт, сильные стороны и интересы. Здесь 2–3
-            предложения о вашей профессиональной роли и ценности для бизнеса.
+            Имею опыт работы в различных сферах и большой бэкграунд в оптимизации и автоматизации процессов.
           </p>
+          <Link to="/blog" className="primary-button" style={{ position: 'absolute', top: 0, right: 0 }}>Перейти в блог</Link>
         </div>
       </section>
 
@@ -139,7 +141,7 @@ function App() {
                     <h3>{card.title}</h3>
                     <p>{card.description}</p>
                     <div className="card__actions">
-                      <a href={card.href} className="link" target="_blank" rel="noreferrer">Подробнее</a>
+                      <Link className="link" to="/blog?from=home">Подробнее</Link>
                       {card.pdfUrl && (
                         <button className="secondary-button" onClick={() => setPdfModalUrl(card.pdfUrl!)}>
                           Открыть PDF
@@ -161,7 +163,7 @@ function App() {
                   <button className="icon-button" aria-label="Закрыть" onClick={() => setPdfModalUrl(null)}>✕</button>
                 </div>
                 <div className="modal__body">
-                  <PdfViewer url={pdfModalUrl} />
+                  <PdfViewer url={pdfModalUrl!} />
                 </div>
               </div>
             </div>
