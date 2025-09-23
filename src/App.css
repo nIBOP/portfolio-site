@@ -6,10 +6,36 @@ html, body { scrollbar-gutter: stable both-edges; }
   padding: 32px 20px 80px;
 }
 
+/* Верхняя панель действий с иконками */
+.top-actions {
+  position: relative;
+  height: 60px; /* пространство для кнопки */
+}
+.top-actions__row {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Во внутристрочном ряду снимаем абсолютное позиционирование с кнопок */
+.top-actions__row .hero__blog-btn,
+.top-actions__row .blog__home-btn {
+  position: static;
+}
+@media (max-width: 720px) {
+  .top-actions { height: 60px; }
+  .top-actions__row { top: 0; right: 0; gap: 6px; }
+}
+
 /* Секции */
 .section {
   margin-bottom: 48px;
 }
+
+/* Заголовок секции без верхнего отступа (для блога и др.) */
+.section h1 { margin-top: 0; }
 
 /* Блок 1: герой */
 .hero {
@@ -22,7 +48,7 @@ html, body { scrollbar-gutter: stable both-edges; }
 .hero__avatar .avatar {
   width: 200px;
   height: 200px;
-  border-radius: 50%;
+  border-radius: 18px;
   background: linear-gradient(135deg, #646cff, #61dafb);
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
@@ -30,7 +56,7 @@ html, body { scrollbar-gutter: stable both-edges; }
 .hero__content h1 {
   margin: 0 0 8px 0;
   font-size: 32px;
-}
+} 
 
 .hero__content p {
   margin: 0;
@@ -263,6 +289,55 @@ html, body { scrollbar-gutter: stable both-edges; }
 .pdf-scale { opacity: 0.8; }
 .pdf-toolbar .secondary-button { height: 36px; }
 .pdf-toolbar .secondary-button.active { border-color: #646cff; box-shadow: 0 0 0 2px rgba(100,108,255,0.2); }
+
+/* Кнопка блога в герое */
+.hero__blog-btn {
+  position: absolute;
+  top: -8px; /* сверхний отступ */
+  right: 0;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #646cff; /* цвет иконки */
+}
+/* Размеры иконок в круглых кнопках */
+.hero__blog-btn svg {
+  width: 32px;
+  height: 32px;
+}
+.blog__home-btn svg {
+  width: 32px;
+  height: 32px;
+}
+@media (max-width: 720px) {
+  .hero__blog-btn { top: -12px; right: 0; }
+}
+
+/* псевдоэлемент больше не нужен, svg вставлен inline */
+
+/* Кнопка домой в блоге — те же размеры и позиция */
+.blog__home-btn {
+  position: absolute;
+  top: 0px;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #646cff;
+}
+@media (max-width: 720px) {
+  .blog__home-btn { top: 0px; right: 0; }
+}
 
 .pdf-pages {
   overflow-x: hidden;

@@ -66,19 +66,29 @@ function App() {
 
   return (
     <div className="page">
+      <div className="top-actions">
+        <div className="top-actions__row">
+          <Link to="/blog" aria-label="Перейти в блог" className="hero__blog-btn">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <path fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinejoin="round" d="M42,57H22A15,15,0,0,1,7,42V22A15,15,0,0,1,22,7H35A15,15,0,0,1,50,22v.5A2.5,2.5,0,0,0,52.5,25,4.5,4.5,0,0,1,57,29.5V42A15,15,0,0,1,42,57ZM22,9A13,13,0,0,0,9,22V42A13,13,0,0,0,22,55H42A13,13,0,0,0,55,42V29.5A2.5,2.5,0,0,0,52.5,27,4.5,4.5,0,0,1,48,22.5V22A13,13,0,0,0,35,9Z"/>
+              <path fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" d="M35.5,27h-11a4.5,4.5,0,0,1,0-9h11a4.5,4.5,0,0,1,0,9Zm-11-7a2.5,2.5,0,0,0,0,5h11a2.5,2.5,0,0,0,0-5Z"/>
+              <path fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" d="M41.5,45h-17a4.5,4.5,0,0,1,0-9h17a4.5,4.5,0,0,1,0,9Zm-17-7a2.5,2.5,0,0,0,0,5h17a2.5,2.5,0,0,0,0-5З"/>
+            </svg>
+          </Link>
+        </div>
+      </div>
       {/* Блок 1: аватар слева, описание справа */}
       <section className="section hero">
         <div className="hero__avatar">
           {/* Замените src на вашу фотографию */}
           <div className="avatar" aria-label="Аватар" />
         </div>
-        <div className="hero__content" style={{ position: 'relative' }}>
+        <div className="hero__content">
           <h1>Василий Дубровин</h1>
           <h3>Аналитик данных / Менеджер проектов</h3>
           <p>
             Имею опыт работы в различных сферах и большой бэкграунд в оптимизации и автоматизации процессов.
           </p>
-          <Link to="/blog" className="primary-button" style={{ position: 'absolute', top: 0, right: 0 }}>Перейти в блог</Link>
         </div>
       </section>
 
