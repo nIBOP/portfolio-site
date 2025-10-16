@@ -2,6 +2,8 @@
 slug: kpi-report
 title: KPI-отчёт
 summary: План-факт, сезонность, доставка отчётов, ретроанализ.
+date: 2024-04-21
+specialization: analytics
 ---
 
 # KPI-отчёт

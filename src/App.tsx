@@ -13,13 +13,13 @@ const resumeLinks: Record<'bi' | 'ba' | 'pm', string> = {
 }
 
 // Карточки проектов по специализациям (замените данными ваших проектов)
-type BlogCard = { title: string; description: string; href: string; image?: string; pdfUrl?: string }
+type BlogCard = { title: string; description: string; href: string; image?: string; pdfUrl?: string; blogSlug?: string }
 
 const blogs: Record<'bi' | 'ba' | 'pm', Array<BlogCard>> = {
   bi: [
-    { title: 'BI Дашборд по продажам', description: 'Подробный интерактивный дашборд в Power BI с несколькими страницами: обзор ключевых метрик (выручка, маржа, средний чек), анализ динамики, когортный анализ, география продаж с тепловыми картами и фильтрами по каналам и сегментам клиентов. Реализованы drill-through, tooltips и параметрические сценарии. Подключение к DWH (Snowflake), инкрементальные обновления и role-level security.', href: '#', pdfUrl: '/public/pdfs/ARB.pdf' },
-    { title: 'ETL-пайплайн', description: 'Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.', href: '#', image: 'https://placehold.co/960x540/png?text=Airflow+%2B+dbt' },
-    { title: 'KPI-отчёт', description: 'Автоматизация формирования KPI-отчёта с доставкой в Slack и Email. План-факт анализ, сезонность, настраиваемые пороги сигналов. Хранение в S3, версионирование и быстрый ретро-анализ.', href: '#', image: 'https://placehold.co/960x540/png?text=KPI+Report' },
+    { title: 'Автоматизированный отчет', description: 'Подробный интерактивный отчет-презентация в Power BI с несколькими страницами: обзор ключевых метрик, анализ динамики. Реализованы drill-through, подключение к DWH (ClickHouse), инкрементальные обновления.', href: '#/bi-dashboard', pdfUrl: '/public/pdfs/ARB.pdf', blogSlug: 'bi-dashboard' },
+    { title: 'ETL-пайплайн', description: 'Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.', href: '#', image: 'https://placehold.co/960x540/png?text=Airflow+%2B+dbt', blogSlug: 'etl-pipeline' },
+    { title: 'KPI-отчёт', description: 'Автоматизация формирования KPI-отчёта с доставкой в Slack и Email. План-факт анализ, сезонность, настраиваемые пороги сигналов. Хранение в S3, версионирование и быстрый ретро-анализ.', href: '#', image: 'https://placehold.co/960x540/png?text=KPI+Report', blogSlug: 'kpi-report' },
   ],
   ba: [
     { title: 'BRD для CRM', description: 'Бизнесс-требования к внедрению CRM: цели, scope, ограничения, заинтересованные стороны, AS-IS/TO-BE, use cases, NFR (производительность, безопасность, доступность). Приоритеты MoSCoW, критерии приёмки, зависимые инициативы, риски и допущения.', href: '#', image: 'https://placehold.co/960x540/png?text=BRD+CRM' },
@@ -151,7 +151,7 @@ function App() {
                     <h3>{card.title}</h3>
                     <p>{card.description}</p>
                     <div className="card__actions">
-                      <Link className="link" to="/blog?from=home">Подробнее</Link>
+                      <Link className="link" to={card.blogSlug ? `/blog/${card.blogSlug}` : '/blog?from=home'}>Подробнее</Link>
                       {card.pdfUrl && (
                         <button className="secondary-button" onClick={() => setPdfModalUrl(card.pdfUrl!)}>
                           Открыть PDF

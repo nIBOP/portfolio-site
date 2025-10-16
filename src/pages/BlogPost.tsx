@@ -2,7 +2,13 @@ import { Link, useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-type Frontmatter = { slug: string; title: string; summary?: string }
+type Frontmatter = {
+  slug: string;
+  title: string;
+  summary?: string;
+  date?: string;
+  specialization?: 'data-engineering' | 'business-intelligence' | 'analytics';
+}
 
 const rawFiles = import.meta.glob('../content/*.md', { eager: true, as: 'raw' }) as Record<string, string>
 
@@ -26,12 +32,12 @@ function parseFrontmatter(markdown: string): { fm: Frontmatter | null; body: str
   return { fm: fm as Frontmatter, body }
 }
 
-function getBySlug(target: string | undefined): { title: string; body: string } | null {
+function getBySlug(target: string | undefined): { title: string; body: string; fm: Frontmatter } | null {
   if (!target) return null
   for (const [, content] of Object.entries(rawFiles)) {
     const { fm, body } = parseFrontmatter(content)
     if (fm && fm.slug === target) {
-      return { title: fm.title || target, body }
+      return { title: fm.title || target, body, fm }
     }
   }
   return null
@@ -55,9 +61,23 @@ export default function BlogPost() {
         </div>
       </div>
       <section className="section">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ margin: 0 }}>{post ? post.title : 'Статья не найдена'}</h1>
-        </div>
+        {post && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h1 style={{ margin: 0 }}>{post.title}</h1>
+              <div style={{ fontSize: 14, opacity: 0.8, marginTop: 6 }}>
+                {post.fm.date && <span>{new Date(post.fm.date).toLocaleDateString()}</span>}
+                {post.fm.specialization && (
+                  <span style={{ marginLeft: 8 }}>
+                    · {post.fm.specialization === 'data-engineering' && 'Data Engineering'}
+                    {post.fm.specialization === 'business-intelligence' && 'Business Intelligence'}
+                    {post.fm.specialization === 'analytics' && 'Analytics'}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
         {post ? (
           <div style={{ marginTop: 16 }}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>

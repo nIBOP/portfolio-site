@@ -1,6 +1,12 @@
 import { Link, useSearchParams } from 'react-router-dom'
 
-type Frontmatter = { slug: string; title: string; summary?: string }
+type Frontmatter = {
+  slug: string;
+  title: string;
+  summary?: string;
+  date?: string; // ISO date string e.g. 2025-10-16
+  specialization?: 'data-engineering' | 'business-intelligence' | 'analytics';
+}
 const rawFiles = import.meta.glob('../content/*.md', { eager: true, as: 'raw' }) as Record<string, string>
 
 function parseFrontmatter(markdown: string): { fm: Frontmatter | null } {
@@ -25,10 +31,24 @@ function parseFrontmatter(markdown: string): { fm: Frontmatter | null } {
 const posts: Frontmatter[] = Object.values(rawFiles)
   .map((content) => parseFrontmatter(content).fm)
   .filter((fm): fm is Frontmatter => !!fm)
+  .sort((a, b) => {
+    const ad = a.date ? Date.parse(a.date) : 0
+    const bd = b.date ? Date.parse(b.date) : 0
+    return bd - ad
+  })
 
 export default function Blog() {
   const [searchParams] = useSearchParams()
   const from = searchParams.get('from')
+  const specialization = searchParams.get('spec') as
+    | 'data-engineering'
+    | 'business-intelligence'
+    | 'analytics'
+    | null
+
+  const visiblePosts = specialization
+    ? posts.filter((p) => p.specialization === specialization)
+    : posts
 
   return (
     <div className="page">
@@ -50,12 +70,29 @@ export default function Blog() {
 
       <section className="section blog">
         <h2>Статьи</h2>
+        <div style={{ marginBottom: 12, opacity: 0.85 }}>
+          <span>Фильтр по специализации: </span>
+          <Link className="link" to="/blog" style={{ marginRight: 8 }}>Все</Link>
+          <Link className="link" to="/blog?spec=data-engineering" style={{ marginRight: 8 }}>Data Engineering</Link>
+          <Link className="link" to="/blog?spec=business-intelligence" style={{ marginRight: 8 }}>Business Intelligence</Link>
+          <Link className="link" to="/blog?spec=analytics">Analytics</Link>
+        </div>
         <div className="blog__grid">
-          {posts.map((p) => (
+          {visiblePosts.map((p) => (
             <article key={p.slug} className="card card--wide">
               <div className="card__content">
                 <h3>{p.title}</h3>
                 {p.summary && <p>{p.summary}</p>}
+                <div style={{ fontSize: 12, opacity: 0.8, margin: '6px 0 10px' }}>
+                  {p.date && <span>{new Date(p.date).toLocaleDateString()}</span>}
+                  {p.specialization && (
+                    <span style={{ marginLeft: 8 }}>
+                      · {p.specialization === 'data-engineering' && 'Data Engineering'}
+                      {p.specialization === 'business-intelligence' && 'Business Intelligence'}
+                      {p.specialization === 'analytics' && 'Analytics'}
+                    </span>
+                  )}
+                </div>
                 <Link className="link" to={`/blog/${p.slug}`}>Читать</Link>
               </div>
             </article>
