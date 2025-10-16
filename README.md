@@ -1,69 +1,59 @@
-# React + TypeScript + Vite
+# Портфолио — React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Небольшой сайт-портфолио. После клонирования репозитория запускается одной командой.
 
-Currently, two official plugins are available:
+## Требования
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 20+ (рекомендуется 20 LTS или 22 LTS)
+- npm 10+ (или pnpm/yarn по желанию)
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Проверить версии:
+```bash
+node -v
+npm -v
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Установка и запуск (локально)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
+
+Vite выведет локальный адрес (обычно `http://localhost:5173`). Откройте его в браузере.
+
+## Сборка и предпросмотр продакшена
+
+```bash
+npm run build
+npm run preview
+```
+
+`preview` запускает статический сервер Vite со SPA‑роутингом (поддержка прямых переходов на `/blog/...`).
+
+## Структура и контент
+
+- Статьи находятся в `src/content/*.md` и рендерятся из Markdown.
+- Фронтматтер в начале файла определяет метаданные:
+```markdown
+---
+slug: bi-dashboard
+title: BI Дашборд по продажам
+summary: Краткое описание
+date: 2024-08-03
+specialization: data-engineering | business-intelligence | analytics
+---
+
+# Заголовок H1
+Текст статьи...
+```
+- Список статей доступен на `/blog`. Фильтр по специализации: `/blog?spec=data-engineering` (или `business-intelligence`, `analytics`).
+
+## Замечания по роутингу
+
+Проект использует `createBrowserRouter` (History API). Для статики на внешнем хостинге нужны правила SPA‑fallback (все пути -> `index.html`). Локально проблем нет: `npm run preview` и `npm run dev` уже настроены.
+
+## Частые проблемы
+
+- Ошибка 404 на прямом переходе по `/blog/...` на продакшене: настройте SPA‑fallback на хостинге или используйте `npm run preview` для локального теста.
+- Отсутствует PDF по пути из карточек на главной: проверьте, что файл существует в `public/pdfs` или скорректируйте ссылку в `src/App.tsx`.
