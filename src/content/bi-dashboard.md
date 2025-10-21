@@ -1,9 +1,9 @@
 ---
 slug: bi-dashboard
-title: BI Дашборд по продажам
-summary: Кейс по Power BI: модель, витрины, визуализации, RLS, эксплуатация.
-date: 2024-08-03
-specialization: business-intelligence
+title: Автоматический отчет по ключевым показателям
+summary: Автоматизировал ежедневный труд
+date: 2025-10-22
+specialization: data-analytics
 ---
 
 В статье описан полный цикл создания BI-решения: 

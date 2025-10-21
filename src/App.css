@@ -49,7 +49,7 @@ html, body { scrollbar-gutter: stable both-edges; }
   width: 200px;
   height: 200px;
   border-radius: 18px;
-  background: linear-gradient(135deg, #646cff, #61dafb);
+  /* background: linear-gradient(135deg, #646cff, #61dafb); */
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 

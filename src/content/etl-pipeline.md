@@ -3,7 +3,7 @@ slug: etl-pipeline
 title: ETL-пайплайн
 summary: Airflow, инкременты, качество данных, оповещения, эксплуатация.
 date: 2024-06-12
-specialization: data-engineering
+specialization: data-analytics
 ---
 
 # ETL-пайплайн

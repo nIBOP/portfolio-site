@@ -1,11 +1,14 @@
 import { Link, useSearchParams } from 'react-router-dom'
+import { specializations, getSpecializationDisplayName } from '../config/specializations'
+
+type SpecializationId = 'data-analytics' | 'business-analytics' | 'management' | 'development'
 
 type Frontmatter = {
   slug: string;
   title: string;
   summary?: string;
   date?: string; // ISO date string e.g. 2025-10-16
-  specialization?: 'data-engineering' | 'business-intelligence' | 'analytics';
+  specialization?: SpecializationId;
 }
 const rawFiles = import.meta.glob('../content/*.md', { eager: true, as: 'raw' }) as Record<string, string>
 
@@ -40,11 +43,7 @@ const posts: Frontmatter[] = Object.values(rawFiles)
 export default function Blog() {
   const [searchParams] = useSearchParams()
   const from = searchParams.get('from')
-  const specialization = searchParams.get('spec') as
-    | 'data-engineering'
-    | 'business-intelligence'
-    | 'analytics'
-    | null
+  const specialization = searchParams.get('spec') as SpecializationId | null
 
   const visiblePosts = specialization
     ? posts.filter((p) => p.specialization === specialization)
@@ -72,10 +71,35 @@ export default function Blog() {
         <h2>Статьи</h2>
         <div style={{ marginBottom: 12, opacity: 0.85 }}>
           <span>Фильтр по специализации: </span>
-          <Link className="link" to="/blog" style={{ marginRight: 8 }}>Все</Link>
-          <Link className="link" to="/blog?spec=data-engineering" style={{ marginRight: 8 }}>Data Engineering</Link>
-          <Link className="link" to="/blog?spec=business-intelligence" style={{ marginRight: 8 }}>Business Intelligence</Link>
-          <Link className="link" to="/blog?spec=analytics">Analytics</Link>
+          <Link 
+            className="link" 
+            to="/blog" 
+            style={{ 
+              marginRight: 8,
+              padding: '4px 8px',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '4px',
+              display: 'inline-block'
+            }}
+          >
+            Все
+          </Link>
+          {specializations.map((spec, index) => (
+            <Link 
+              key={spec.id}
+              className="link" 
+              to={`/blog?spec=${spec.id}`} 
+              style={{ 
+                marginRight: index < specializations.length - 1 ? 8 : 0,
+                padding: '4px 8px',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '4px',
+                display: 'inline-block'
+              }}
+            >
+              {spec.displayName}
+            </Link>
+          ))}
         </div>
         <div className="blog__grid">
           {visiblePosts.map((p) => (
@@ -87,9 +111,7 @@ export default function Blog() {
                   {p.date && <span>{new Date(p.date).toLocaleDateString()}</span>}
                   {p.specialization && (
                     <span style={{ marginLeft: 8 }}>
-                      · {p.specialization === 'data-engineering' && 'Data Engineering'}
-                      {p.specialization === 'business-intelligence' && 'Business Intelligence'}
-                      {p.specialization === 'analytics' && 'Analytics'}
+                      · {getSpecializationDisplayName(p.specialization)}
                     </span>
                   )}
                 </div>
