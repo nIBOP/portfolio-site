@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import './App.css'
 import PdfViewer from './components/PdfViewer'
 
@@ -99,8 +99,36 @@ const blogs: Record<"bi" | "ba" | "pm", Array<BlogCard>> = {
 };
 
 function App() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedSpec, setSelectedSpec] = useState<Specialization>(null);
   const [pdfModalUrl, setPdfModalUrl] = useState<string | null>(null);
+
+  // Инициализация специализации из URL или localStorage
+  useEffect(() => {
+    const specFromUrl = searchParams.get('spec') as Specialization;
+    const specFromStorage = localStorage.getItem('selectedSpec') as Specialization;
+    
+    if (specFromUrl && ['bi', 'ba', 'pm'].includes(specFromUrl)) {
+      setSelectedSpec(specFromUrl);
+      localStorage.setItem('selectedSpec', specFromUrl);
+    } else if (specFromStorage && ['bi', 'ba', 'pm'].includes(specFromStorage)) {
+      setSelectedSpec(specFromStorage);
+      // Обновляем URL с сохранённой специализацией
+      setSearchParams({ spec: specFromStorage });
+    }
+  }, [searchParams, setSearchParams]);
+
+  // Синхронизация выбранной специализации с URL и localStorage
+  const handleSpecChange = (newSpec: Specialization) => {
+    setSelectedSpec(newSpec);
+    if (newSpec) {
+      setSearchParams({ spec: newSpec });
+      localStorage.setItem('selectedSpec', newSpec);
+    } else {
+      setSearchParams({});
+      localStorage.removeItem('selectedSpec');
+    }
+  };
 
   // Блокируем прокрутку фона, когда открыта модалка PDF
   useEffect(() => {
@@ -187,19 +215,19 @@ function App() {
         <div className="spec-buttons">
           <button
             className={`spec-button ${selectedSpec === "bi" ? "active" : ""}`}
-            onClick={() => setSelectedSpec(selectedSpec === "bi" ? null : "bi")}
+            onClick={() => handleSpecChange(selectedSpec === "bi" ? null : "bi")}
           >
             BI-аналитик
           </button>
           <button
             className={`spec-button ${selectedSpec === "ba" ? "active" : ""}`}
-            onClick={() => setSelectedSpec(selectedSpec === "ba" ? null : "ba")}
+            onClick={() => handleSpecChange(selectedSpec === "ba" ? null : "ba")}
           >
             Бизнес-аналитик
           </button>
           <button
             className={`spec-button ${selectedSpec === "pm" ? "active" : ""}`}
-            onClick={() => setSelectedSpec(selectedSpec === "pm" ? null : "pm")}
+            onClick={() => handleSpecChange(selectedSpec === "pm" ? null : "pm")}
           >
             Менеджер проектов
           </button>
@@ -246,8 +274,8 @@ function App() {
                         className="link"
                         to={
                           card.blogSlug
-                            ? `/blog/${card.blogSlug}`
-                            : "/blog?from=home"
+                            ? `/blog/${card.blogSlug}?spec=${selectedSpec}`
+                            : `/blog?from=home&spec=${selectedSpec}`
                         }
                       >
                         Подробнее
