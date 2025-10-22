@@ -33,6 +33,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Ensure CNAME is included
+        if: exists('CNAME')
+        run: |
+          mkdir -p dist
+          cp CNAME dist/CNAME
+
       - name: SPA 404 fallback
         run: cp dist/index.html dist/404.html
 
