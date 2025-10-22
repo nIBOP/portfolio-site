@@ -2,129 +2,48 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import './App.css'
 import PdfViewer from './components/PdfViewer'
-
-type Specialization = "bi" | "ba" | "pm" | null;
-
-// Ссылки на резюме по специализациям (замените на реальные URL)
-const resumeLinks: Record<"bi" | "ba" | "pm", string> = {
-  bi: "https://github.com/your-username/your-repo/releases/latest/download/resume-bi.pdf",
-  ba: "https://github.com/your-username/your-repo/releases/latest/download/resume-ba.pdf",
-  pm: "https://raw.githubusercontent.com/nIBOP/random-assets/refs/heads/main/cv-pm-25.pdf",
-};
-
-// Карточки проектов по специализациям (замените данными ваших проектов)
-type BlogCard = {
-  title: string;
-  description: string;
-  href: string;
-  image?: string;
-  pdfUrl?: string;
-  blogSlug?: string;
-};
-
-const blogs: Record<"bi" | "ba" | "pm", Array<BlogCard>> = {
-  bi: [
-    {
-      title: "Автоматизированный отчет",
-      description:
-        "Подробный интерактивный отчет-презентация в Power BI с несколькими страницами: обзор ключевых метрик, анализ динамики. Реализованы drill-through, подключение к DWH (ClickHouse), инкрементальные обновления.",
-      href: "#/bi-dashboard",
-      image: "/img/PBI dash.png",
-      pdfUrl: "/public/pdfs/ARB.pdf",
-      blogSlug: "bi-dashboard",
-    },
-    {
-      title: "ETL-пайплайн",
-      description:
-        "Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.",
-      href: "#",
-      image: "https://placehold.co/960x540/png?text=Airflow+%2B+dbt",
-      blogSlug: "etl-pipeline",
-    },
-    {
-      title: "Мониторинг загрузки транспортной инфраструктуры Краснодарского края",
-      description:
-        "Длинная работа с данными, анализ загрузки транспортной инфраструктуры Краснодарского края. Использование Excel, Python, PostgreSQL, Apache Superset.",
-      href: "#/monitoring",
-      image: "/img/excel-krim-pivot.png",
-      blogSlug: "monitoring",
-    },
-  ],
-  ba: [
-    // {
-    //   title: "BRD для CRM",
-    //   description:
-    //     "Бизнесс-требования к внедрению CRM: цели, scope, ограничения, заинтересованные стороны, AS-IS/TO-BE, use cases, NFR (производительность, безопасность, доступность). Приоритеты MoSCoW, критерии приёмки, зависимые инициативы, риски и допущения.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=BRD+CRM",
-    // },
-    // {
-    //   title: "Юзер-истории и BDD",
-    //   description:
-    //     "Структура бэклога в Jira: эпики, фичи, юзер-истории с критериями приёмки в формате Gherkin (Given-When-Then). Трассировка требований, оценка по story points, DoR/DoD, примеры спецификации сценариев.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=User+Stories+%26+BDD",
-    // },
-    // {
-    //   title: "Процессная модель",
-    //   description:
-    //     "Моделирование процессов в BPMN 2.0: диаграммы AS-IS и TO-BE, идентификация узких мест, матрица RACI, операционные KPI, рекомендации по оптимизации и цифровизации.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=BPMN+Model",
-    // },
-  ],
-  pm: [
-    // {
-    //   title: "План проекта",
-    //   description:
-    //     "Детализированный WBS с декомпозицией работ до уровня пакетов, оценка длительности и стоимости, ресурсный план, календарный план в MS Project, критический путь, риск-реестр с оценкой вероятности/влияния и стратегиями ответа.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=Project+Plan",
-    // },
-    // {
-    //   title: "Коммуникационный план",
-    //   description:
-    //     "Карта стейкхолдеров, матрица влияния/интереса, каналы и частота коммуникаций, форматы отчётности, шаблоны созвонов и рассылок, эскалации и управление ожиданиями.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=Comms+Plan",
-    // },
-    // {
-    //   title: "Релиз-менеджмент",
-    //   description:
-    //     "Процесс релизов: релизные ветки, чек-листы готовности, артефакты, контроль качества, go/no-go митинги, обратимость изменений (rollback) и пострелизный мониторинг.",
-    //   href: "#",
-    //   image: "https://placehold.co/960x540/png?text=Release+Mgmt",
-    // },
-  ],
-};
+import { mainSpecializations, getMainSpecializationById, type MainSpecialization } from './config/mainSpecializations'
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedSpec, setSelectedSpec] = useState<Specialization>(null);
+  const [selectedSpec, setSelectedSpec] = useState<MainSpecialization | null>(null);
   const [pdfModalUrl, setPdfModalUrl] = useState<string | null>(null);
+
+  // Получаем список ID всех доступных специализаций
+  const availableSpecIds = mainSpecializations.map(spec => spec.id);
 
   // Инициализация специализации из URL или localStorage
   useEffect(() => {
-    const specFromUrl = searchParams.get('spec') as Specialization;
-    const specFromStorage = localStorage.getItem('selectedSpec') as Specialization;
+    const specFromUrl = searchParams.get('spec');
+    const specFromStorage = localStorage.getItem('selectedSpec');
     
-    if (specFromUrl && ['bi', 'ba', 'pm'].includes(specFromUrl)) {
-      setSelectedSpec(specFromUrl);
-      localStorage.setItem('selectedSpec', specFromUrl);
-    } else if (specFromStorage && ['bi', 'ba', 'pm'].includes(specFromStorage)) {
-      setSelectedSpec(specFromStorage);
-      // Обновляем URL с сохранённой специализацией
-      setSearchParams({ spec: specFromStorage });
+    if (specFromUrl && availableSpecIds.includes(specFromUrl)) {
+      const spec = getMainSpecializationById(specFromUrl);
+      if (spec) {
+        setSelectedSpec(spec);
+        localStorage.setItem('selectedSpec', spec.id);
+      }
+    } else if (specFromStorage && availableSpecIds.includes(specFromStorage)) {
+      const spec = getMainSpecializationById(specFromStorage);
+      if (spec) {
+        setSelectedSpec(spec);
+        // Обновляем URL с сохранённой специализацией
+        setSearchParams({ spec: spec.id });
+      }
     }
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, availableSpecIds]);
 
   // Синхронизация выбранной специализации с URL и localStorage
-  const handleSpecChange = (newSpec: Specialization) => {
-    setSelectedSpec(newSpec);
-    if (newSpec) {
-      setSearchParams({ spec: newSpec });
-      localStorage.setItem('selectedSpec', newSpec);
+  const handleSpecChange = (specId: string | null) => {
+    if (specId) {
+      const spec = getMainSpecializationById(specId);
+      if (spec) {
+        setSelectedSpec(spec);
+        setSearchParams({ spec: spec.id });
+        localStorage.setItem('selectedSpec', spec.id);
+      }
     } else {
+      setSelectedSpec(null);
       setSearchParams({});
       localStorage.removeItem('selectedSpec');
     }
@@ -141,20 +60,15 @@ function App() {
   }, [pdfModalUrl]);
 
   const specTitle = useMemo(() => {
-    if (selectedSpec === "bi") return "BI-аналитик";
-    if (selectedSpec === "ba") return "Бизнес-аналитик";
-    if (selectedSpec === "pm") return "Менеджер проектов";
-    return null;
+    return selectedSpec?.displayName || null;
   }, [selectedSpec]);
 
   const resumeUrl = useMemo(() => {
-    if (!selectedSpec) return null;
-    return resumeLinks[selectedSpec];
+    return selectedSpec?.resumeUrl || null;
   }, [selectedSpec]);
 
   const currentBlogCards = useMemo(() => {
-    if (!selectedSpec) return [];
-    return blogs[selectedSpec];
+    return selectedSpec?.projects || [];
   }, [selectedSpec]);
 
   return (
@@ -213,24 +127,15 @@ function App() {
       <section className="section specializations">
         <h2>Выберите специализацию</h2>
         <div className="spec-buttons">
-          <button
-            className={`spec-button ${selectedSpec === "bi" ? "active" : ""}`}
-            onClick={() => handleSpecChange(selectedSpec === "bi" ? null : "bi")}
-          >
-            BI-аналитик
-          </button>
-          <button
-            className={`spec-button ${selectedSpec === "ba" ? "active" : ""}`}
-            onClick={() => handleSpecChange(selectedSpec === "ba" ? null : "ba")}
-          >
-            Бизнес-аналитик
-          </button>
-          <button
-            className={`spec-button ${selectedSpec === "pm" ? "active" : ""}`}
-            onClick={() => handleSpecChange(selectedSpec === "pm" ? null : "pm")}
-          >
-            Менеджер проектов
-          </button>
+          {mainSpecializations.map((spec) => (
+            <button
+              key={spec.id}
+              className={`spec-button ${selectedSpec?.id === spec.id ? "active" : ""}`}
+              onClick={() => handleSpecChange(selectedSpec?.id === spec.id ? null : spec.id)}
+            >
+              {spec.displayName}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -274,8 +179,8 @@ function App() {
                         className="link"
                         to={
                           card.blogSlug
-                            ? `/blog/${card.blogSlug}?spec=${selectedSpec}`
-                            : `/blog?from=home&spec=${selectedSpec}`
+                            ? `/blog/${card.blogSlug}?spec=${selectedSpec.id}`
+                            : `/blog?from=home&spec=${selectedSpec.id}`
                         }
                       >
                         Подробнее

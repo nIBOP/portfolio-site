@@ -3,7 +3,7 @@ slug: bi-dashboard
 title: Автоматический отчет по ключевым показателям
 summary: Автоматизировал ежедневный труд
 date: 2025-10-22
-specialization: data-analytics
+tags: ['data-analytics', 'business-intelligence']
 ---
 
 В статье описан полный цикл создания BI-решения: 

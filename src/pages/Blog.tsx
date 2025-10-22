@@ -1,14 +1,24 @@
 import { Link, useSearchParams } from 'react-router-dom'
-import { specializations, getSpecializationDisplayName } from '../config/specializations'
 
-type SpecializationId = 'data-analytics' | 'business-analytics' | 'management' | 'development'
+type TagId = 'data-analytics' | 'business-analytics' | 'management' | 'development' | 'data-engineering' | 'business-intelligence' | 'analytics'
+
+// Теги для блога
+const tags = [
+  { id: 'data-analytics', name: 'Аналитика данных', displayName: 'Аналитика данных', color: '#3b82f6' },
+  { id: 'business-analytics', name: 'Бизнес-аналитика', displayName: 'Бизнес-аналитика', color: '#10b981' },
+  { id: 'management', name: 'Менеджмент', displayName: 'Менеджмент', color: '#f59e0b' },
+  { id: 'development', name: 'Разработка', displayName: 'Разработка', color: '#8b5cf6' },
+  { id: 'data-engineering', name: 'Data Engineering', displayName: 'Data Engineering', color: '#ef4444' },
+  { id: 'business-intelligence', name: 'Business Intelligence', displayName: 'Business Intelligence', color: '#06b6d4' },
+  { id: 'analytics', name: 'Analytics', displayName: 'Analytics', color: '#84cc16' }
+] as const
 
 type Frontmatter = {
   slug: string;
   title: string;
   summary?: string;
   date?: string; // ISO date string e.g. 2025-10-16
-  specialization?: SpecializationId;
+  tags?: TagId[]; // Массив тегов
 }
 const rawFiles = import.meta.glob('../content/*.md', { eager: true, as: 'raw' }) as Record<string, string>
 
@@ -24,8 +34,28 @@ function parseFrontmatter(markdown: string): { fm: Frontmatter | null } {
     if (idx === -1) return
     const key = line.slice(0, idx).trim()
     const value = line.slice(idx + 1).trim().replace(/^"|^'|"$|'$/g, '')
-    // @ts-expect-error узкий парсер YAML
-    fm[key] = value
+    
+    // Специальная обработка для массива тегов
+    if (key === 'tags') {
+      try {
+        // Парсим YAML-массив: ['tag1', 'tag2', 'tag3']
+        const arrayMatch = value.match(/\[(.*?)\]/)
+        if (arrayMatch) {
+          const arrayContent = arrayMatch[1]
+          const tags = arrayContent
+            .split(',')
+            .map(tag => tag.trim().replace(/^'|^"|'$|"$/g, ''))
+            .filter(tag => tag.length > 0)
+          fm[key] = tags as TagId[]
+        }
+      } catch {
+        // Если не удалось распарсить массив, игнорируем
+        console.warn('Failed to parse tags array:', value)
+      }
+    } else {
+      // @ts-expect-error узкий парсер YAML
+      fm[key] = value
+    }
   })
   if (!fm.slug || !fm.title) return { fm: null }
   return { fm: fm as Frontmatter }
@@ -43,17 +73,17 @@ const posts: Frontmatter[] = Object.values(rawFiles)
 export default function Blog() {
   const [searchParams] = useSearchParams()
   const from = searchParams.get('from')
-  const specialization = searchParams.get('spec') as SpecializationId | null
+  const selectedTag = searchParams.get('tag') as TagId | null
 
-  const visiblePosts = specialization
-    ? posts.filter((p) => p.specialization === specialization)
+  const visiblePosts = selectedTag
+    ? posts.filter((p) => p.tags?.includes(selectedTag))
     : posts
 
   return (
     <div className="page">
       <div className="top-actions">
         <Link 
-          to={from === 'home' ? `/?spec=${specialization || ''}` : '/'} 
+          to={from === 'home' ? `/?spec=${selectedTag || ''}` : '/'} 
           aria-label="На главную" 
           className="blog__home-btn"
         >
@@ -74,52 +104,93 @@ export default function Blog() {
       <section className="section blog">
         <h2>Статьи</h2>
         <div style={{ marginBottom: 12, opacity: 0.85 }}>
-          <span>Фильтр по специализации: </span>
+          <span>Фильтр по тегам: </span>
           <Link 
             className="link" 
             to="/blog" 
             style={{ 
               marginRight: 8,
+              marginBottom: 6,
               padding: '4px 8px',
               border: '1px solid rgba(255, 255, 255, 0.3)',
               borderRadius: '4px',
-              display: 'inline-block'
+              display: 'inline-block',
+              color: 'inherit'
             }}
           >
             Все
           </Link>
-          {specializations.map((spec, index) => (
+          {tags.map((tag, index) => (
             <Link 
-              key={spec.id}
+              key={tag.id}
               className="link" 
-              to={`/blog?spec=${spec.id}`} 
+              to={`/blog?tag=${tag.id}`} 
               style={{ 
-                marginRight: index < specializations.length - 1 ? 8 : 0,
+                marginRight: index < tags.length - 1 ? 8 : 0,
                 padding: '4px 8px',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
+                border: `1px solid ${tag.color || 'rgba(255, 255, 255, 0.3)'}`,
                 borderRadius: '4px',
-                display: 'inline-block'
+                display: 'inline-block',
+                backgroundColor: selectedTag === tag.id ? tag.color : 'transparent',
+                color: selectedTag === tag.id ? 'white' : 'inherit'
               }}
             >
-              {spec.displayName}
+              {tag.displayName}
             </Link>
           ))}
         </div>
         <div className="blog__grid">
           {visiblePosts.map((p) => (
-            <article key={p.slug} className="card card--wide">
+            <article key={p.slug} className="card">
               <div className="card__content">
                 <h3>{p.title}</h3>
-                {p.summary && <p>{p.summary}</p>}
+                {p.summary && <p style={{marginBottom: '6px' }}>{p.summary}</p>}
                 <div style={{ fontSize: 12, opacity: 0.8, margin: '6px 0 10px' }}>
-                  {p.date && <span>{new Date(p.date).toLocaleDateString()}</span>}
-                  {p.specialization && (
-                    <span style={{ marginLeft: 8 }}>
-                      · {getSpecializationDisplayName(p.specialization)}
-                    </span>
+                  {p.tags && p.tags.length > 0 && (
+                    <div style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                      {p.tags.map((tagId) => {
+                        const tag = tags.find(t => t.id === tagId);
+                        return tag ? (
+                          <span
+                            key={tagId}
+                            style={{
+                              color: tag.color || '#ffffff',
+                              fontWeight: 'bold',
+                              fontSize: '12px',
+                              marginRight: '8px'
+                            }}
+                          >
+                            #{tag.displayName}
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
                   )}
+                  {p.date && <span>{new Date(p.date).toLocaleDateString()}</span>}
                 </div>
-                <Link className="link" to={`/blog/${p.slug}`}>Читать</Link>
+                <Link 
+                  className="secondary-button" 
+                  to={`/blog/${p.slug}`}
+                  style={{ 
+                    display: 'inline-block',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer',
+                    padding: '6px 12px',
+                    fontSize: '16px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#2a2a2a';
+                    e.currentTarget.style.borderColor = '#646cff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#1a1a1a';
+                    e.currentTarget.style.borderColor = '#333';
+                  }}
+                >
+                  Читать
+                </Link>
               </div>
             </article>
           ))}

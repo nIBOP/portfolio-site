@@ -1,5 +1,11 @@
+/* Импорт шрифта */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
 /* Контейнер страницы */
-html, body { scrollbar-gutter: stable both-edges; }
+html, body { 
+  scrollbar-gutter: stable both-edges;
+  font-family: 'Manrope', sans-serif;
+}
 .page {
   max-width: 1200px;
   margin: 0 auto;
@@ -123,7 +129,7 @@ html, body { scrollbar-gutter: stable both-edges; }
 
 .card--wide {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 240px 1fr;
   gap: 0;
 }
 
@@ -194,7 +200,7 @@ html, body { scrollbar-gutter: stable both-edges; }
     grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   }
   .card--wide {
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 200px 1fr;
   }
 }
 
