@@ -1,6 +1,6 @@
 ---
 slug: monitoring
-title: Мониторинг загрузки транспортной инфраструктуры Краснодарского края
+title: Мониторинг загрузки транспортной инфраструктуры
 summary: Очистка и сбор данных, Excel, Superset
 date: 2025-10-21
 specialization: data-analytics

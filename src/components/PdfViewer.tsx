@@ -199,10 +199,10 @@ export default function PdfViewer({ url }: PdfViewerProps) {
     userAdjustedRef.current = true
     setScale((s) => Math.min(5, +(s + 0.1).toFixed(2)))
   }
-  function setPreset(p: number) {
-    userAdjustedRef.current = true
-    setScale(p)
-  }
+  // function setPreset(p: number) {
+  //   userAdjustedRef.current = true
+  //   setScale(p)
+  // }
 
   // Точный автоподгон по ширине при изменении размеров контейнера (в т.ч. появление скроллбара, изменение модалки)
   useEffect(() => {
