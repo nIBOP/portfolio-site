@@ -1,6 +1,8 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { useState, useEffect } from 'react'
+import PdfViewer from '../components/PdfViewer'
 
 type TagId = 'data-analytics' | 'business-analytics' | 'management' | 'development' | 'data-engineering' | 'business-intelligence' | 'analytics'
 
@@ -21,6 +23,7 @@ type Frontmatter = {
   summary?: string;
   date?: string;
   tags?: TagId[];
+  pdfUrl?: string; // URL для PDF файла
 }
 
 const rawFiles = import.meta.glob('../content/*.md', { eager: true, as: 'raw' }) as Record<string, string>
@@ -81,6 +84,17 @@ export default function BlogPost() {
   const [searchParams] = useSearchParams()
   const tag = searchParams.get('tag')
   const post = getBySlug(slug)
+  const [pdfModalUrl, setPdfModalUrl] = useState<string | null>(null)
+
+  // Блокируем прокрутку фона, когда открыта модалка PDF
+  useEffect(() => {
+    if (!pdfModalUrl) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [pdfModalUrl]);
 
   return (
     <div className="page">
@@ -144,6 +158,20 @@ export default function BlogPost() {
                 </div>
               )}
             </div>
+            {post.fm.pdfUrl && (
+              <div style={{ marginTop: 16, marginBottom: 8 }}>
+                <button
+                  className="secondary-button"
+                  onClick={() => setPdfModalUrl(post.fm.pdfUrl!)}
+                  style={{ 
+                    padding: '6px 12px',
+                    fontSize: '14px'
+                  }}
+                >
+                  Открыть PDF
+                </button>
+              </div>
+            )}
           </div>
         )}
         {post ? (
@@ -154,6 +182,30 @@ export default function BlogPost() {
           <p style={{ marginTop: 16 }}>Проверьте ссылку или вернитесь в блог.</p>
         )}
       </section>
+
+      {pdfModalUrl && (
+        <div className="modal" role="dialog" aria-modal="true">
+          <div
+            className="modal__backdrop"
+            onClick={() => setPdfModalUrl(null)}
+          />
+          <div className="modal__dialog">
+            <div className="modal__header">
+              <h3>Просмотр PDF</h3>
+              <button
+                className="icon-button"
+                aria-label="Закрыть"
+                onClick={() => setPdfModalUrl(null)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal__body">
+              <PdfViewer url={pdfModalUrl!} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
