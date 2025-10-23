@@ -15,10 +15,10 @@ export interface MainSpecialization {
 
 export const mainSpecializations: MainSpecialization[] = [
   {
-    id: 'bi',
-    name: 'BI-аналитик',
-    displayName: 'BI-аналитик',
-    resumeUrl: 'https://github.com/your-username/your-repo/releases/latest/download/resume-bi.pdf',
+    id: 'da',
+    name: 'Аналитик данных',
+    displayName: 'Аналитик данных',
+    resumeUrl: 'https://raw.githubusercontent.com/nIBOP/random-assets/refs/heads/main/cv-da-25.pdf',
     projects: [
       {
         title: 'Автоматизированный отчет',
@@ -44,15 +44,15 @@ export const mainSpecializations: MainSpecialization[] = [
       },
     ]
   },
-  {
-    id: 'ba',
-    name: 'Бизнес-аналитик',
-    displayName: 'Бизнес-аналитик',
-    resumeUrl: 'https://github.com/your-username/your-repo/releases/latest/download/resume-ba.pdf',
-    projects: [
-      // Пока пустой массив, можно добавить проекты позже
-    ]
-  },
+  // {
+  //   id: 'ba',
+  //   name: 'Бизнес-аналитик',
+  //   displayName: 'Бизнес-аналитик',
+  //   resumeUrl: 'https://github.com/your-username/your-repo/releases/latest/download/resume-ba.pdf',
+  //   projects: [
+  //     // Пока пустой массив, можно добавить проекты позже
+  //   ]
+  // },
   {
     id: 'pm',
     name: 'Менеджер проектов',
