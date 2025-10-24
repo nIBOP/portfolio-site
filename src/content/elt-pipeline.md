@@ -1,12 +1,12 @@
 ---
-slug: etl-pipeline
-title: ETL-пайплайн
+slug: elt-pipeline
+title: ELT-пайплайн
 summary: Airflow, инкременты, качество данных, оповещения, эксплуатация.
 date: 2024-06-12
 tags: ['data-engineering', 'data-analytics']
 ---
 
-# ETL-пайплайн
+# ELT-пайплайн
 
 Детали оркестрации:
 

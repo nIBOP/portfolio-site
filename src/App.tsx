@@ -30,6 +30,14 @@ function App() {
         // Обновляем URL с сохранённой специализацией
         setSearchParams({ spec: spec.id });
       }
+    } else {
+      // По умолчанию выбираем первую специализацию
+      const firstSpec = mainSpecializations[0];
+      if (firstSpec) {
+        setSelectedSpec(firstSpec);
+        setSearchParams({ spec: firstSpec.id });
+        localStorage.setItem('selectedSpec', firstSpec.id);
+      }
     }
   }, [searchParams, setSearchParams, availableSpecIds]);
 
@@ -144,7 +152,7 @@ function App() {
         <>
           {/* Блок 3: Скачать резюме */}
           <section className="section resume">
-            <h2>Резюме — {specTitle}</h2>
+            <h2>Резюме</h2>
             <p>
               Скачайте актуальную версию резюме для выбранной специализации.
             </p>
@@ -162,7 +170,7 @@ function App() {
 
           {/* Блок 4: Блог/проекты по специализации */}
           <section className="section blog">
-            <h2>Проекты — {specTitle}</h2>
+            <h2>Проекты</h2>
             <div className="blog__grid">
               {currentBlogCards.map((card) => (
                 <article key={card.title} className="card card--wide">

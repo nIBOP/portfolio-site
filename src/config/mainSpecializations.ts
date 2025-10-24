@@ -25,15 +25,15 @@ export const mainSpecializations: MainSpecialization[] = [
         description: 'Подробный интерактивный отчет-презентация в Power BI с несколькими страницами: обзор ключевых метрик, анализ динамики. Реализованы drill-through, подключение к DWH (ClickHouse), инкрементальные обновления.',
         href: '#/bi-dashboard',
         image: '/img/PBI dash.png',
-        pdfUrl: '/public/pdfs/ARB.pdf',
+        pdfUrl: 'https://raw.githubusercontent.com/nIBOP/portfolio-site/refs/heads/main/public/pdfs/ARB.pdf',
         blogSlug: 'bi-dashboard',
       },
       {
-        title: 'ETL-пайплайн',
+        title: 'ELT-пайплайн',
         description: 'Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.',
         href: '#',
         image: 'https://placehold.co/960x540/png?text=Airflow+%2B+dbt',
-        blogSlug: 'etl-pipeline',
+        blogSlug: 'elt-pipeline',
       },
       {
         title: 'Мониторинг загрузки транспортной инфраструктуры Краснодарского края',
