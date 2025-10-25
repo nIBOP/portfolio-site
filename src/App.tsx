@@ -67,9 +67,9 @@ function App() {
     };
   }, [pdfModalUrl]);
 
-  const specTitle = useMemo(() => {
-    return selectedSpec?.displayName || null;
-  }, [selectedSpec]);
+  // const specTitle = useMemo(() => {
+  //   return selectedSpec?.displayName || null;
+  // }, [selectedSpec]);
 
   const resumeUrl = useMemo(() => {
     return selectedSpec?.resumeUrl || null;
