@@ -9,7 +9,7 @@ const tags = [
   { id: 'management', name: 'Менеджмент', displayName: 'Менеджмент', color: '#f59e0b' },
   { id: 'development', name: 'Разработка', displayName: 'Разработка', color: '#8b5cf6' },
   { id: 'data-engineering', name: 'Data Engineering', displayName: 'Data Engineering', color: '#ef4444' },
-  { id: 'business-intelligence', name: 'Business Intelligence', displayName: 'Business Intelligence', color: '#06b6d4' },
+  { id: 'business-intelligence', name: 'Business Intelligence', displayName: 'BI', color: '#06b6d4' },
   { id: 'analytics', name: 'Analytics', displayName: 'Analytics', color: '#84cc16' }
 ] as const
 
@@ -127,6 +127,7 @@ export default function Blog() {
               to={`/blog?tag=${tag.id}`} 
               style={{ 
                 marginRight: index < tags.length - 1 ? 8 : 0,
+                marginBottom: 8,
                 padding: '4px 8px',
                 border: `1px solid ${tag.color || 'rgba(255, 255, 255, 0.3)'}`,
                 borderRadius: '4px',

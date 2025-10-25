@@ -25,7 +25,7 @@ export const mainSpecializations: MainSpecialization[] = [
         description: 'Подробный интерактивный отчет-презентация в Power BI с несколькими страницами: обзор ключевых метрик, анализ динамики. Реализованы drill-through, подключение к DWH (ClickHouse), инкрементальные обновления.',
         href: '#/bi-dashboard',
         image: '/img/PBI dash.png',
-        pdfUrl: 'https://raw.githubusercontent.com/nIBOP/portfolio-site/refs/heads/main/public/pdfs/ARB.pdf',
+        pdfUrl: '/pdfs/ARB.pdf',
         blogSlug: 'bi-dashboard',
       },
       {
