@@ -1,0 +1,94 @@
+/* ===== Стили для компонента Skills ===== */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 16px;
+  padding: 12px 0;
+  max-width: calc(100% - 80px); /* Оставляем место справа для timeline */
+}
+
+.skill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #333;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  aspect-ratio: 1;
+  position: relative;
+  max-width: 96px; /* Ограничиваем максимальный размер ячейки */
+}
+
+.skill-icon:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: #646cff;
+  transform: translateY(-2px);
+}
+
+/* Стилизация img внутри skill-icon */
+.skill-icon img {
+  width: 100%;
+  height: 100%;
+  max-width: 64px;
+  max-height: 64px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Текстовое обозначение (fallback) */
+.skill-icon-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  user-select: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Адаптивность */
+@media (max-width: 720px) {
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 12px;
+    max-width: 100%; /* На мобильных используем всю ширину */
+  }
+
+  .skill-icon {
+    padding: 8px;
+    max-width: 80px;
+  }
+
+  .skill-icon img {
+    max-width: 48px;
+    max-height: 48px;
+  }
+
+  .skill-icon-text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 8px;
+  }
+
+  .skill-icon {
+    padding: 6px;
+    max-width: 70px;
+  }
+
+  .skill-icon img {
+    max-width: 40px;
+    max-height: 40px;
+  }
+
+  .skill-icon-text {
+    font-size: 14px;
+  }
+}

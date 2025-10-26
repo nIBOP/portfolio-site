@@ -1,0 +1,99 @@
+/* ===== Стили для страницы отдельной статьи блога ===== */
+
+/* Основной контейнер статьи */
+.blog-post-page {
+  text-align: left;
+}
+
+.blog-post-page .section {
+  text-align: left;
+}
+
+/* Заголовок статьи */
+.blog-post-page .post-title {
+  margin: 0;
+}
+
+/* Метаинформация статьи */
+.blog-post-page .post-meta {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 6px;
+}
+
+.blog-post-page .post-tags {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blog-post-page .post-tag {
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 12px;
+}
+
+/* Кнопка PDF */
+.blog-post-page .pdf-button-container {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.blog-post-page .pdf-button {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+/* Контент статьи */
+.blog-post-page .post-content {
+  margin-top: 16px;
+}
+
+/* Кнопка "К списку статей" */
+.blog-post-page .back-button {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 16px;
+}
+
+.blog-post-page .back-button:hover {
+  background-color: #2a2a2a;
+  border-color: #646cff;
+}
+
+/* Сообщение об ошибке */
+.blog-post-page .error-message {
+  margin-top: 16px;
+}
+
+/* Адаптивность для статьи */
+@media (max-width: 720px) {
+  .blog-post-page .section h1 {
+    text-align: center;
+  }
+  
+  .blog-post-page .post-meta {
+    text-align: center;
+  }
+  
+  .blog-post-page .post-tags {
+    justify-content: center;
+  }
+  
+  .blog-post-page .pdf-button-container {
+    text-align: center;
+  }
+  
+  /* Контент статьи остается выровнен по левому краю */
+  .blog-post-page .section p,
+  .blog-post-page .section ul,
+  .blog-post-page .section ol,
+  .blog-post-page .section blockquote {
+    text-align: left;
+  }
+}

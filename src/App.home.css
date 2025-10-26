@@ -1,0 +1,85 @@
+/* ===== Стили для главной страницы ===== */
+
+/* Основной контейнер главной страницы */
+.home-page {
+  text-align: left;
+}
+
+/* Hero секция */
+.home-page .hero {
+  text-align: left;
+}
+
+/* Двухколоночная структура */
+.home-page .two-column-layout {
+  text-align: left;
+}
+
+.home-page .blog {
+    margin-bottom: 48px;
+}
+
+/* Секции на главной */
+.home-page .specializations,
+.home-page .resume,
+.home-page .blog,
+.home-page .contacts,
+.home-page .timeline-section {
+  text-align: left;
+}
+
+/* Адаптивность для главной страницы */
+@media (max-width: 720px) {
+  .home-page {
+    text-align: center;
+  }
+  
+  .home-page .hero {
+    text-align: center;
+  }
+  
+  .home-page .hero__content h1,
+  .home-page .hero__content h3,
+  .home-page .hero__content p {
+    text-align: center;
+  }
+  
+  .home-page .specializations,
+  .home-page .resume,
+  .home-page .blog,
+  .home-page .contacts,
+  .home-page .timeline-section {
+    text-align: center;
+  }
+  
+  .home-page .blog h2,
+  .home-page .contacts h2,
+  .home-page .specializations h2,
+  .home-page .resume h2,
+  .home-page .timeline-container h2 {
+    text-align: center;
+  }
+  
+  .home-page .spec-buttons {
+    justify-content: center;
+  }
+  
+  .home-page .resume > div {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .home-page .hero {
+    text-align: center;
+  }
+  
+  .home-page .hero__content h1 {
+    font-size: 24px;
+  }
+  
+  .home-page .hero__content h3 {
+    margin-bottom: 12px;
+  }
+}

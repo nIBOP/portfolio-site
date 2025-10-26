@@ -3,6 +3,7 @@ export interface MainSpecialization {
   name: string;
   displayName: string;
   resumeUrl: string;
+  skills?: Array<string | { name: string; icon?: string }>; // URL-ссылки на иконки или объекты с name и icon
   projects: Array<{
     title: string;
     description: string;
@@ -19,6 +20,19 @@ export const mainSpecializations: MainSpecialization[] = [
     name: 'Аналитик данных',
     displayName: 'Аналитик данных',
     resumeUrl: 'https://raw.githubusercontent.com/nIBOP/random-assets/refs/heads/main/cv-da-25.pdf',
+    skills: [
+      { name: "Apache Airflow", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apacheairflow/apacheairflow-original.svg" },
+      { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+      { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
+      { name: "PowerBi", icon: "/devicons/pbi.svg"},
+      { name: "Apache Superset", icon: "/devicons/superset.svg"},
+      { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg"},    
+      { name: "Numpy", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" },
+      { name: "MatPlotLib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" },
+      { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
+      { name: "ClickHouse", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/clickhouse/clickhouse-original.svg" },
+      { name: "Mongodb", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
+    ],
     projects: [
       {
         title: 'Автоматизированный отчет',
@@ -30,9 +44,9 @@ export const mainSpecializations: MainSpecialization[] = [
       },
       {
         title: 'ELT-пайплайн',
-        description: 'Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.',
+        description: 'Оркестрация пайплайна в Apache Airflow: загрузка входящей документации в S3, проверка качества данных с Great Expectations и загрузка в ClickHouse.',
         href: '#',
-        image: 'https://placehold.co/960x540/png?text=Airflow+%2B+dbt',
+        image: '/img/pipeline.drawio.png',
         blogSlug: 'elt-pipeline',
       },
       {
@@ -58,6 +72,7 @@ export const mainSpecializations: MainSpecialization[] = [
     name: 'Менеджер проектов',
     displayName: 'Менеджер проектов',
     resumeUrl: 'https://raw.githubusercontent.com/nIBOP/random-assets/refs/heads/main/cv-pm-25.pdf',
+    skills: [], // URL-ссылки на иконки технологий
     projects: [
       // Пока пустой массив, можно добавить проекты позже
     ]
