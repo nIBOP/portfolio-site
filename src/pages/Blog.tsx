@@ -1,17 +1,16 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import './Blog.css'
 
-type TagId = 'data-analytics' | 'business-analytics' | 'management' | 'development' | 'data-engineering' | 'business-intelligence' | 'analytics'
+type TagId = 'data-analytics' | 'data-engineering' | 'business-intelligence' | 'automation' | 'python' | 'visualization'
 
 // Теги для блога
 const tags = [
   { id: 'data-analytics', name: 'Аналитика данных', displayName: 'Аналитика данных', color: '#3b82f6' },
-  { id: 'business-analytics', name: 'Бизнес-аналитика', displayName: 'Бизнес-аналитика', color: '#10b981' },
-  { id: 'management', name: 'Менеджмент', displayName: 'Менеджмент', color: '#f59e0b' },
-  { id: 'development', name: 'Разработка', displayName: 'Разработка', color: '#8b5cf6' },
   { id: 'data-engineering', name: 'Data Engineering', displayName: 'Data Engineering', color: '#ef4444' },
   { id: 'business-intelligence', name: 'Business Intelligence', displayName: 'BI', color: '#06b6d4' },
-  { id: 'analytics', name: 'Analytics', displayName: 'Analytics', color: '#84cc16' }
+  { id: 'automation', name: 'Автоматизация', displayName: 'Автоматизация', color: '#10b981' },
+  { id: 'python', name: 'Python', displayName: 'Python', color: '#f59e0b' },
+  { id: 'visualization', name: 'Визуализация', displayName: 'Визуализация', color: '#8b5cf6' }
 ] as const
 
 type Frontmatter = {

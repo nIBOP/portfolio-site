@@ -3,7 +3,7 @@ slug: elt-pipeline
 title: ELT-пайплайн
 summary: Airflow, инкременты, качество данных, оповещения, эксплуатация.
 date: 2024-10-24
-tags: ['data-engineering', 'data-analytics']
+tags: ['data-engineering', 'automation', 'python']
 ---
 
 # ELT-пайплайн

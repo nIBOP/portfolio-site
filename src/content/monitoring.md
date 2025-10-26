@@ -3,7 +3,7 @@ slug: monitoring
 title: Мониторинг загрузки транспортной инфраструктуры
 summary: Очистка и сбор данных, Excel, Superset
 date: 2025-10-21
-tags: ['data-analytics', 'business-analytics', 'management']
+tags: ['data-analytics', 'visualization', 'python']
 ---
 
 ## Контекст проекта

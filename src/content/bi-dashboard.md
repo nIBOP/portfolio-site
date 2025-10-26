@@ -3,7 +3,7 @@ slug: bi-dashboard
 title: Автоматический отчет по ключевым показателям
 summary: Автоматизировал ежедневный труд
 date: 2025-10-22
-tags: ['data-analytics', 'business-intelligence']
+tags: ['business-intelligence', 'automation', 'visualization']
 pdfUrl: '/pdfs/ARB.pdf'
 ---
 
