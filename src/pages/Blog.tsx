@@ -103,7 +103,6 @@ export default function Blog() {
       </section>
 
       <section className="section blog">
-        <h2>Статьи</h2>
         <div className="tag-filter-container">
           <span className="tag-filter-label">Фильтр по тегам: </span>
           <Link className="link tag-link" to="/blog">

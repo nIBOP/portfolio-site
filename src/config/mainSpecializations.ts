@@ -44,9 +44,9 @@ export const mainSpecializations: MainSpecialization[] = [
       },
       {
         title: 'ELT-пайплайн',
-        description: 'Оркестрация пайплайна в Apache Airflow: инкрементальная загрузка из источников (PostgreSQL, Google Sheets), проверка качества данных с Great Expectations, моделирование слоёв staging/transform в dbt, контроль SLA и уведомления. Канареечные деплои и backfills.',
+        description: 'Оркестрация пайплайна в Apache Airflow: загрузка входящей документации в S3, проверка качества данных с Great Expectations и загрузка в ClickHouse.',
         href: '#',
-        image: 'https://placehold.co/960x540/png?text=Airflow+%2B+dbt',
+        image: '/img/pipeline.drawio.png',
         blogSlug: 'elt-pipeline',
       },
       {

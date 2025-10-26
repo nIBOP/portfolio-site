@@ -10,6 +10,10 @@
   text-align: left;
 }
 
+.blog-page .section h1 {
+  margin-bottom: 16px !important;
+}
+
 .blog-page .blog h2 {
   text-align: left;
 }
@@ -112,7 +116,7 @@
   .blog-page .blog h2 {
     text-align: center;
   }
-  
+
   /* Контент карточек остается слева даже на мобильных */
   .blog-page .card__content {
     text-align: left;
