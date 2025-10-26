@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { useState, useEffect } from 'react'
 import PdfViewer from '../components/PdfViewer'
+import './BlogPost.css'
 
 type TagId = 'data-analytics' | 'business-analytics' | 'management' | 'development' | 'data-engineering' | 'business-intelligence' | 'analytics'
 
@@ -97,30 +98,10 @@ export default function BlogPost() {
   }, [pdfModalUrl]);
 
   return (
-    <div className="page">
+    <div className="page blog-post-page">
       <div className="top-actions">
         <div className="top-actions__row">
-          <Link 
-            to={`/blog${tag ? `?tag=${tag}` : ''}`} 
-            className="secondary-button"
-            style={{ 
-              display: 'inline-block',
-              textDecoration: 'none',
-              textAlign: 'center',
-              transition: 'all 0.2s ease',
-              cursor: 'pointer',
-              padding: '6px 12px',
-              fontSize: '16px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#2a2a2a';
-              e.currentTarget.style.borderColor = '#646cff';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#1a1a1a';
-              e.currentTarget.style.borderColor = '#333';
-            }}
-          >
+          <Link to={`/blog${tag ? `?tag=${tag}` : ''}`} className="secondary-button back-button">
             ← К списку статей
           </Link>
           <Link to={`/${tag ? `?spec=${tag}` : ''}`} aria-label="На главную" className="blog__home-btn">
@@ -134,23 +115,15 @@ export default function BlogPost() {
       <section className="section">
         {post && (
           <div>
-            <h1 style={{ margin: 0 }}>{post.title}</h1>
-            <div style={{ fontSize: 14, opacity: 0.8, marginTop: 6 }}>
+            <h1 className="post-title">{post.title}</h1>
+            <div className="post-meta">
               {post.fm.date && <span>{new Date(post.fm.date).toLocaleDateString()}</span>}
               {post.fm.tags && post.fm.tags.length > 0 && (
-                <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                <div className="post-tags">
                   {post.fm.tags.map((tagId) => {
                     const tag = tags.find(t => t.id === tagId);
                     return tag ? (
-                      <span
-                        key={tagId}
-                        style={{
-                          color: tag.color || '#ffffff',
-                          fontWeight: 'bold',
-                          fontSize: '12px',
-                          marginRight: '12px'
-                        }}
-                      >
+                      <span key={tagId} className="post-tag" style={{ color: tag.color }}>
                         #{tag.displayName}
                       </span>
                     ) : null;
@@ -159,15 +132,8 @@ export default function BlogPost() {
               )}
             </div>
             {post.fm.pdfUrl && (
-              <div style={{ marginTop: 16, marginBottom: 8 }}>
-                <button
-                  className="secondary-button"
-                  onClick={() => setPdfModalUrl(post.fm.pdfUrl!)}
-                  style={{ 
-                    padding: '6px 12px',
-                    fontSize: '14px'
-                  }}
-                >
+              <div className="pdf-button-container">
+                <button className="secondary-button pdf-button" onClick={() => setPdfModalUrl(post.fm.pdfUrl!)}>
                   Открыть PDF
                 </button>
               </div>
@@ -175,11 +141,11 @@ export default function BlogPost() {
           </div>
         )}
         {post ? (
-          <div style={{ marginTop: 16 }}>
+          <div className="post-content">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
           </div>
         ) : (
-          <p style={{ marginTop: 16 }}>Проверьте ссылку или вернитесь в блог.</p>
+          <p className="error-message">Проверьте ссылку или вернитесь в блог.</p>
         )}
       </section>
 

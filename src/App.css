@@ -37,7 +37,8 @@ html, body {
 
 /* Секции */
 .section {
-  margin-bottom: 48px;
+  margin-bottom: 0;
+  text-align: left;
 }
 
 /* Заголовок секции без верхнего отступа (для блога и др.) */
@@ -49,6 +50,8 @@ html, body {
   grid-template-columns: 200px 1fr;
   gap: 24px;
   align-items: center;
+  margin-bottom: 16px;
+  text-align: left;
 }
 
 .hero__avatar .avatar {
@@ -70,18 +73,44 @@ html, body {
 }
 
 /* Блок 2: специализации */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  text-align: left;
+}
+
+.specializations,
+.resume,
+.blog,
+.contacts,
+.timeline-section {
+  text-align: left;
+}
+
 .specializations h2,
 .resume h2,
 .blog h2,
-.contacts h2 {
+.contacts h2,
+.timeline-container h2 {
   margin: 0 0 16px 0;
   font-size: 24px;
+  text-align: left;
 }
 
 .spec-buttons {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .spec-button {
@@ -178,12 +207,19 @@ html, body {
     grid-template-columns: 1fr;
     text-align: center;
   }
+  .skills-section h2 {
+    text-align: center;
+  }
   .hero__avatar {
     display: flex;
     justify-content: center;
   }
   .card--wide {
     grid-template-columns: 1fr;
+  }
+  .two-column-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }
 
@@ -202,6 +238,9 @@ html, body {
   .card--wide {
     grid-template-columns: 200px 1fr;
   }
+  .two-column-layout {
+    gap: 30px;
+  }
 }
 
 @media (max-width: 860px) {
@@ -210,6 +249,10 @@ html, body {
   }
   .blog__grid {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+  .two-column-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }
 
@@ -221,6 +264,26 @@ html, body {
   .pdf-toolbar { gap: 6px; padding: 6px 8px; }
   .pdf-pages { padding: 8px; gap: 8px; }
   .modal__dialog { width: 96vw; height: 88vh; }
+}
+
+@media (max-width: 450px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .hero__avatar {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .hero__content h1 {
+    font-size: 24px;
+  }
+  
+  .hero__content h3 {
+    margin-bottom: 12px;
+  }
 }
 
 /* Модальное окно */
@@ -367,3 +430,4 @@ html, body {
 .pdf-page canvas {
   display: block;
 }
+

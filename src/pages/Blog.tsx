@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom'
+import './Blog.css'
 
 type TagId = 'data-analytics' | 'business-analytics' | 'management' | 'development' | 'data-engineering' | 'business-intelligence' | 'analytics'
 
@@ -80,7 +81,7 @@ export default function Blog() {
     : posts
 
   return (
-    <div className="page">
+    <div className="page blog-page">
       <div className="top-actions">
         <Link 
           to={from === 'home' ? `/?spec=${selectedTag || ''}` : '/'} 
@@ -96,42 +97,25 @@ export default function Blog() {
       <section className="section">
         <h1>Блог</h1>
         {from === 'home' && (
-          <p style={{ opacity: 0.8 }}>Вы перешли сюда со ссылок на главной странице.</p>
+          <p className="from-home-message">Вы перешли сюда со ссылок на главной странице.</p>
         )}
         <p>Здесь записаны истории проектов, в которых я участвовал и просто интересные истории, которые происходили в моей работе.</p>
       </section>
 
       <section className="section blog">
         <h2>Статьи</h2>
-        <div style={{ marginBottom: 12, opacity: 0.85 }}>
-          <span>Фильтр по тегам: </span>
-          <Link 
-            className="link" 
-            to="/blog" 
-            style={{ 
-              marginRight: 8,
-              marginBottom: 6,
-              padding: '4px 8px',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRadius: '4px',
-              display: 'inline-block',
-              color: 'inherit'
-            }}
-          >
+        <div className="tag-filter-container">
+          <span className="tag-filter-label">Фильтр по тегам: </span>
+          <Link className="link tag-link" to="/blog">
             Все
           </Link>
-          {tags.map((tag, index) => (
+          {tags.map((tag) => (
             <Link 
               key={tag.id}
-              className="link" 
+              className="link tag-link" 
               to={`/blog?tag=${tag.id}`} 
               style={{ 
-                marginRight: index < tags.length - 1 ? 8 : 0,
-                marginBottom: 8,
-                padding: '4px 8px',
-                border: `1px solid ${tag.color || 'rgba(255, 255, 255, 0.3)'}`,
-                borderRadius: '4px',
-                display: 'inline-block',
+                borderColor: tag.color,
                 backgroundColor: selectedTag === tag.id ? tag.color : 'transparent',
                 color: selectedTag === tag.id ? 'white' : 'inherit'
               }}
@@ -145,22 +129,14 @@ export default function Blog() {
             <article key={p.slug} className="card">
               <div className="card__content">
                 <h3>{p.title}</h3>
-                {p.summary && <p style={{marginBottom: '6px' }}>{p.summary}</p>}
-                <div style={{ fontSize: 12, opacity: 0.8, margin: '6px 0 10px' }}>
+                {p.summary && <p className="card-summary">{p.summary}</p>}
+                <div className="card-meta">
                   {p.tags && p.tags.length > 0 && (
-                    <div style={{ marginBottom: 8, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                    <div className="card-tags">
                       {p.tags.map((tagId) => {
                         const tag = tags.find(t => t.id === tagId);
                         return tag ? (
-                          <span
-                            key={tagId}
-                            style={{
-                              color: tag.color || '#ffffff',
-                              fontWeight: 'bold',
-                              fontSize: '12px',
-                              marginRight: '8px'
-                            }}
-                          >
+                          <span key={tagId} className="card-tag" style={{ color: tag.color }}>
                             #{tag.displayName}
                           </span>
                         ) : null;
@@ -169,27 +145,7 @@ export default function Blog() {
                   )}
                   {p.date && <span>{new Date(p.date).toLocaleDateString()}</span>}
                 </div>
-                <Link 
-                  className="secondary-button" 
-                  to={`/blog/${p.slug}`}
-                  style={{ 
-                    display: 'inline-block',
-                    textDecoration: 'none',
-                    textAlign: 'center',
-                    transition: 'all 0.2s ease',
-                    cursor: 'pointer',
-                    padding: '6px 12px',
-                    fontSize: '16px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#2a2a2a';
-                    e.currentTarget.style.borderColor = '#646cff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#1a1a1a';
-                    e.currentTarget.style.borderColor = '#333';
-                  }}
-                >
+                <Link className="secondary-button read-button" to={`/blog/${p.slug}`}>
                   Читать
                 </Link>
               </div>

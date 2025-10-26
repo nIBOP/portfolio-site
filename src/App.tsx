@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import './App.css'
+import './App.home.css'
 import PdfViewer from './components/PdfViewer'
+import Timeline from './components/Timeline'
+import Skills from './components/Skills'
 import { mainSpecializations, getMainSpecializationById, type MainSpecialization } from './config/mainSpecializations'
 
 function App() {
@@ -80,7 +83,7 @@ function App() {
   }, [selectedSpec]);
 
   return (
-    <div className="page">
+    <div className="page home-page">
       <div className="top-actions">
         <div className="top-actions__row">
           <Link
@@ -131,43 +134,61 @@ function App() {
         </div>
       </section>
 
-      {/* Блок 2: выбор специализации */}
-      <section className="section specializations">
-        <h2>Выберите специализацию</h2>
-        <div className="spec-buttons">
-          {mainSpecializations.map((spec) => (
-            <button
-              key={spec.id}
-              className={`spec-button ${selectedSpec?.id === spec.id ? "active" : ""}`}
-              onClick={() => handleSpecChange(selectedSpec?.id === spec.id ? null : spec.id)}
-            >
-              {spec.displayName}
-            </button>
-          ))}
+      {/* Блок 2: двухколоночная структура */}
+      <div className="two-column-layout">
+        <div className="left-column">
+          {/* Выбор специализации */}
+          <section className="section specializations">
+            <h2>Специализация</h2>
+            <div className="spec-buttons">
+              {mainSpecializations.map((spec) => (
+                <button
+                  key={spec.id}
+                  className={`spec-button ${selectedSpec?.id === spec.id ? "active" : ""}`}
+                  onClick={() => handleSpecChange(selectedSpec?.id === spec.id ? null : spec.id)}
+                >
+                  {spec.displayName}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Навыки и технологии */}
+          {selectedSpec?.skills && selectedSpec.skills.length > 0 && (
+            <section className="section skills-section">
+              <h2>Инструментарий</h2>
+              <Skills skills={selectedSpec.skills} />
+            </section>
+          )}
+
+          {/* Скачать резюме */}
+          {selectedSpec && (
+            <section className="section resume">
+              <div>
+                <a
+                  className="primary-button"
+                  href={resumeUrl ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Скачать резюме (PDF)
+                </a>
+              </div>
+            </section>
+          )}
         </div>
-      </section>
+
+        <div className="right-column">
+          {/* Timeline */}
+          <section className="section timeline-section">
+            <Timeline />
+          </section>
+        </div>
+      </div>
 
       {/* Блоки 3–4: появляются только при выборе специализации */}
       {selectedSpec && (
         <>
-          {/* Блок 3: Скачать резюме */}
-          <section className="section resume">
-            <h2>Резюме</h2>
-            <p>
-              Скачайте актуальную версию резюме для выбранной специализации.
-            </p>
-            <div>
-              <a
-                className="primary-button"
-                href={resumeUrl ?? "#"}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Скачать резюме (PDF)
-              </a>
-            </div>
-          </section>
-
           {/* Блок 4: Блог/проекты по специализации */}
           <section className="section blog">
             <h2>Проекты</h2>
