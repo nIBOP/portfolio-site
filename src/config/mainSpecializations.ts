@@ -44,7 +44,7 @@ export const mainSpecializations: MainSpecialization[] = [
       },
       {
         title: 'ELT-пайплайн',
-        description: 'Оркестрация пайплайна в Apache Airflow: загрузка входящей документации в S3, проверка качества данных с Great Expectations и загрузка в ClickHouse.',
+        description: 'Оркестрация пайплайна в Apache Airflow: загрузка входящей документации в S3, проверка качества данных и загрузка в ClickHouse.',
         href: '#',
         image: '/img/pipeline.drawio.png',
         blogSlug: 'elt-pipeline',

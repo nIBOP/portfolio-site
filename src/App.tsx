@@ -187,6 +187,7 @@ function App() {
       {selectedSpec && (
         <section className="section blog">
           <h2>Проекты</h2>
+          <p>Только начал наполнять раздел, поэтому здесь пока немного информации.</p>
           <div className="blog__grid">
             {currentBlogCards.map((card) => (
               <article key={card.title} className="card card--wide">
