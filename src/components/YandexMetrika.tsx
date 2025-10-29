@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 // Расширяем глобальный объект Window для TypeScript
 declare global {
   interface Window {
-    ym?: (id: number, method: string, ...params: any[]) => void;
+    ym?: (id: number, method: string, url?: string, options?: any) => void;
   }
 }
 
@@ -16,7 +16,10 @@ export default function YandexMetrika() {
   useEffect(() => {
     // Отслеживаем переходы между страницами
     if (window.ym) {
-      window.ym(METRIKA_ID, 'hit', window.location.href);
+      const url = location.pathname + location.search + location.hash;
+      window.ym(METRIKA_ID, 'hit', url, {
+        title: document.title
+      });
     }
   }, [location]);
 
